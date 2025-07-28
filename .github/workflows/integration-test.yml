@@ -1,0 +1,42 @@
+name: Integration Test
+
+on: 
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Start Midnight Node
+      run: node dist/cli.js up --detach
+
+    - name: Wait for Node to be Healthy
+      run: |
+        timeout 30s bash -c \
+          'until node dist/cli.js health; do
+            sleep 1
+          done'
+
+    - name: Check Node Status
+      run: node dist/cli.js status
+
+    - name: Stop Midnight Node
+      run: node dist/cli.js down
