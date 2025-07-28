@@ -1,72 +1,304 @@
-# Midnight Template Repository
+# Midnight Network Node CLI
 
-This GitHub repository should be used as a template when creating a new Midnight GitHub repository.
-The template is configured with default repository settings and a set of default files that are expected to exist in all Midnight GitHub repositories.
+A CLI tool for easily running Midnight Network development nodes.
 
-### LICENSE
+## Quick Start
 
-Apache 2.0.
+```bash
+# Install globally
+npm install -g @midnight-ntwrk/midnight-node
 
-### README.md
+# Or run directly with npx
+npx @midnight-ntwrk/midnight-node up
+```
 
-Provides a brief description for users and developers who want to understand the purpose, setup, and usage of the repository.
+## Features
 
-### SECURITY.md
+- 🚀 **Easy setup**: Start a Midnight development node with a single command
+- 🐳 **Docker-based**: Uses official Midnight Network Docker images
+- 📊 **Node management**: Start, stop, reset, and monitor your development node
+- 🏥 **Health checks**: Verify your node is running and responding
+- 📄 **Log streaming**: View real-time logs from your development node
+- ⚙️ **Configurable**: Customize ports, versions, and presets
 
-Provides a brief description of the Midnight Foundation's security policy and how to properly disclose security issues.
+## Commands
 
-### CONTRIBUTING.md
+### `up` - Start a development node
 
-Provides guidelines for how people can contribute to the Midnight project.
+Start a new Midnight Network development node:
 
-### CODEOWNERS
+```bash
+midnight-node up
+```
 
-Defines repository ownership rules.
+Options:
 
-### ISSUE_TEMPLATE
+- `-p, --port <port>`: Port to expose the node on (default: 9944)
+- `-v, --version <version>`: Midnight node version (default: 0.12.1)
+- `--preset <preset>`: Configuration preset (default: dev)
+- `--name <n>`: Container name (default: midnight-dev-node)
+- `--detach`: Run container in detached mode
+- `--pull`: Pull latest image before starting
 
-Provides templates for reporting various types of issues, such as: bug report, documentation improvement and feature request.
+Examples:
 
-### PULL_REQUEST_TEMPLATE
+```bash
+# Start with default settings
+midnight-node up
 
-Provides a template for a pull request.
+# Start on custom port with specific version
+midnight-node up -p 8944 -v 0.12.0
 
-### CLA Assistant
+# Pull fresh image and start in detached mode
+midnight-node up --pull --detach
+```
 
-The Midnight Foundation appreciates contributions, and like many other open source projects asks contributors to sign a contributor
-License Agreement before accepting contributions. We use CLA assistant (https://github.com/cla-assistant/cla-assistant) to streamline the CLA
-signing process, enabling contributors to sign our CLAs directly within a GitHub pull request.
+### `down` - Stop the development node
 
-### Dependabot
+Stop and remove the running development node:
 
-The Midnight Foundation uses GitHub Dependabot feature to keep our projects dependencies up-to-date and address potential security vulnerabilities. 
+```bash
+midnight-node down
+```
 
-### Checkmarx
+Options:
 
-The Midnight Foundation uses Checkmarx for application security (AppSec) to identify and fix security vulnerabilities.
-All repositories are scanned with Checkmarx's suite of tools including: Static Application Security Testing (SAST), Infrastructure as Code (IaC), Software Composition Analysis (SCA), API Security, Container Security and Supply Chain Scans (SCS).
+- `--name <n>`: Container name (default: midnight-dev-node)
+- `--volumes`: Remove volumes as well
 
-### Unito
+### `status` - Check node status
 
-Facilitates two-way data synchronization, automated workflows and streamline processes between: Jira, GitHub issues and Github project Kanban board. 
+Check the current status of your development node:
 
-# TODO - New Repo Owner
+```bash
+midnight-node status
+```
 
-### Software Package Data Exchange (SPDX)
-Include the following Software Package Data Exchange (SPDX) short-form identifier in a comment at the top headers of each source code file.
+This will show:
 
+- Container running state
+- Docker image information
+- Start time and uptime
+- Port mappings
+- RPC endpoint URL
 
- <I>// This file is part of <B>REPLACE WITH REPO-NAME</B>.<BR>
- // Copyright (C) 2025 Midnight Foundation<BR>
- // SPDX-License-Identifier: Apache-2.0<BR>
- // Licensed under the Apache License, Version 2.0 (the "License");<BR>
- // You may not use this file except in compliance with the License.<BR>
- // You may obtain a copy of the License at<BR>
- //<BR>
- //	http://www.apache.org/licenses/LICENSE-2.0<BR>
- //<BR>
- // Unless required by applicable law or agreed to in writing, software<BR>
- // distributed under the License is distributed on an "AS IS" BASIS,<BR>
- // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<BR>
- // See the License for the specific language governing permissions and<BR>
- // limitations under the License.</I>
+### `logs` - View node logs
+
+View logs from the development node:
+
+```bash
+midnight-node logs
+```
+
+Options:
+
+- `--name <n>`: Container name (default: midnight-dev-node)
+- `-f, --follow`: Follow log output in real-time
+- `--tail <lines>`: Number of lines to show from the end of logs (default: 100)
+
+Examples:
+
+```bash
+# View last 100 lines
+midnight-node logs
+
+# Follow logs in real-time
+midnight-node logs -f
+
+# View last 500 lines
+midnight-node logs --tail 500
+```
+
+### `reset` - Reset the development node
+
+Stop, remove, pull fresh image, and start the development node:
+
+```bash
+midnight-node reset
+```
+
+This is equivalent to running `down`, then `up --pull`.
+
+### `health` - Check node health
+
+Perform a health check on the running node:
+
+```bash
+midnight-node health
+```
+
+Options:
+
+- `--port <port>`: Port the node is running on (default: 9944)
+- `--timeout <timeout>`: Health check timeout in seconds (default: 30)
+
+## Requirements
+
+- **Docker**: Make sure Docker is installed and running
+- **Node.js**: Version 16 or higher
+
+## Installation
+
+### Global Installation
+
+```bash
+npm install -g @midnight-ntwrk/midnight-node
+```
+
+### Local Development
+
+```bash
+# Clone the repository
+git clone https://github.com/midnight-ntwrk/midnight-node.git
+cd midnight-node
+
+# Install dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Run locally
+npm run dev up
+```
+
+## Configuration
+
+The tool uses the official Midnight Network Docker image:
+
+```
+midnightnetwork/midnight-node:0.12.1
+```
+
+Default configuration:
+
+- **Port**: 9944 (RPC endpoint)
+- **Preset**: dev (development configuration)
+- **Container name**: midnight-dev-node
+
+## Development Workflow
+
+1. **Start your development environment**:
+
+   ```bash
+   midnight-node up
+   ```
+
+2. **Check that everything is running**:
+
+   ```bash
+   midnight-node status
+   midnight-node health
+   ```
+
+3. **Your RPC endpoint is ready**:
+
+   ```
+   http://localhost:9944
+   ```
+
+4. **View logs if needed**:
+
+   ```bash
+   midnight-node logs -f
+   ```
+
+5. **When you're done developing**:
+   ```bash
+   midnight-node down
+   ```
+
+## Troubleshooting
+
+### Docker Issues
+
+If you get Docker-related errors:
+
+1. Make sure Docker is installed and running
+2. Check that you have permission to run Docker commands
+3. On Linux, you might need to add your user to the docker group:
+   ```bash
+   sudo usermod -aG docker $USER
+   ```
+
+### Port Conflicts
+
+If port 9944 is already in use:
+
+```bash
+# Use a different port
+midnight-node up -p 8944
+```
+
+### Container Issues
+
+If the container fails to start:
+
+```bash
+# Check logs for errors
+midnight-node logs
+
+# Try resetting with a fresh image
+midnight-node reset
+```
+
+### Node Not Responding
+
+If health checks fail:
+
+```bash
+# Check if container is running
+midnight-node status
+
+# View recent logs
+midnight-node logs --tail 50
+
+# Try restarting
+midnight-node reset
+```
+
+## Examples
+
+### Basic Development Setup
+
+```bash
+# Start development node
+midnight-node up
+
+# In another terminal, check status
+midnight-node status
+
+# Test RPC connection
+curl -X POST http://localhost:9944 \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"system_health","params":[],"id":1}'
+```
+
+### Custom Configuration
+
+```bash
+# Start on port 8944 with specific version
+midnight-node up -p 8944 -v 0.11.0
+
+# Reset with custom settings
+midnight-node reset -p 8944 -v 0.12.1
+```
+
+### Monitoring and Debugging
+
+```bash
+# Follow logs in real-time
+midnight-node logs -f
+
+# Check health with custom timeout
+midnight-node health --timeout 60
+
+# View container details
+midnight-node status
+```
+
+## Support
+
+- [GitHub Issues](https://github.com/midnight-ntwrk/midnight-node/issues)
+- [Midnight Network Documentation](https://docs.midnight.network/)
+- [Discord Community](https://discord.gg/midnight)
