@@ -1,0 +1,63 @@
+{
+  "name": "@midnight-ntwrk/midnight-node",
+  "version": "1.0.0",
+  "description": "CLI tool for running Midnight Network development nodes",
+  "main": "dist/index.js",
+  "bin": "dist/cli.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/cli.ts",
+    "prepare": "npm run build",
+    "test": "jest",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint . --fix && prettier --write ."
+  },
+  "keywords": [
+    "midnight",
+    "blockchain",
+    "node",
+    "cli",
+    "development"
+  ],
+  "author": "Midnight Network",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0",
+    "dockerode": "^4.0.7",
+    "inquirer": "^12.6.3",
+    "node-fetch": "^3.3.2",
+    "ora": "^8.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@types/dockerode": "^3.3.41",
+    "@types/inquirer": "^9.0.8",
+    "@types/node": "^24.0.3",
+    "@types/node-fetch": "^2.6.12",
+    "eslint": "^9.29.0",
+    "jest": "^30.0.2",
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.1"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/midnight-ntwrk/midnight-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/midnight-ntwrk/midnight-node/issues"
+  },
+  "homepage": "https://github.com/midnight-ntwrk/midnight-node#readme",
+  "packageManager": "npm@11.5.1+sha512.232e6f5d9e799bcb486920b3e9ba907fdf96e576cf7e8c9446c8162e33a416096a1d37a9e910d9a918f6b1f606791c99bc6bb61ee2569b496ec74af13d0dbd95"
+}
