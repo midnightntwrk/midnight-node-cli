@@ -234,6 +234,7 @@ export class MidnightNode {
         );
         if (containerInfo.State.ExitCode !== 0) {
           logger.info(`Exit Code: ${chalk.red(containerInfo.State.ExitCode)}`);
+          process.exit(containerInfo.State.ExitCode);
         }
       }
     } catch (error: unknown) {
@@ -243,6 +244,7 @@ export class MidnightNode {
         logger.info(
           `Use ${chalk.yellow("midnight-node up")} to start a new node`,
         );
+        process.exit(404);
       } else {
         throw error;
       }
@@ -326,21 +328,24 @@ export class MidnightNode {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "system_health",
-          params: [],
-          id: 1,
-        }),
-        signal: controller.signal
-      });
-
-      clearTimeout(timeoutId);
+      let response;
+      try {
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            method: "system_health",
+            params: [],
+            id: 1,
+          }),
+          signal: controller.signal
+        });
+      } finally {
+        clearTimeout(timeoutId);
+      }
 
       if (response.ok) {
         const data = await response.json() as JsonRpcResponse;
@@ -360,6 +365,7 @@ export class MidnightNode {
       } else {
         spinner.fail(`Node returned HTTP ${response.status}`);
         logger.error(`Health check failed with status: ${response.status}`);
+        process.exit(1);
       }
     } catch (error: unknown) {
       const fetchError = error as FetchError;
@@ -375,6 +381,7 @@ export class MidnightNode {
       } else {
         logger.error(`Health check error: ${fetchError.message}`);
       }
+      process.exit(1);
     }
   }
 
