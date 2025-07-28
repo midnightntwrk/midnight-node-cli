@@ -25,9 +25,6 @@ coverage/
 # ESLint cache
 .eslintcache
 
-# Prettier cache
-.prettierignore
-
 # Optional npm cache directory
 .npm
 

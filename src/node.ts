@@ -341,14 +341,14 @@ export class MidnightNode {
             params: [],
             id: 1,
           }),
-          signal: controller.signal
+          signal: controller.signal,
         });
       } finally {
         clearTimeout(timeoutId);
       }
 
       if (response.ok) {
-        const data = await response.json() as JsonRpcResponse;
+        const data = (await response.json()) as JsonRpcResponse;
         spinner.succeed("Node is healthy and responding! ✨");
 
         logger.info(`📊 Health Check Results:`);

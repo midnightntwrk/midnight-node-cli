@@ -24,7 +24,7 @@ interface DockerError extends Error {
 }
 
 export class DockerHelper {
-  constructor(private docker: Docker) { }
+  constructor(private docker: Docker) {}
 
   async checkDockerAvailable(): Promise<void> {
     try {
